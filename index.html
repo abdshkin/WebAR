@@ -3,20 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebAR Тест</title>
+    <title>WebAR Просмотр 3D-модели</title>
     <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
     <script src="https://raw.githack.com/jeromeetienne/AR.js/2.0.5/aframe/build/aframe-ar.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: true; sourceWidth: 1280; sourceHeight: 720;">
-        <!-- Камера с AR -->
+        <!-- Маркер -->
         <a-marker preset="hiro">
-            <!-- 3D-объект -->
-            <a-box position="0 0.5 0" material="color: red;"></a-box>
+            <!-- 3D-модель -->
+            <a-entity id="model" gltf-model="model.glb" position="0 0 0" scale="1 1 1" animation-mixer></a-entity>
         </a-marker>
 
-        <!-- Камера -->
-        <a-camera cursor="rayOrigin: mouse"></a-camera>
+        <!-- Камера с управлением зумом -->
+        <a-camera id="camera" cursor="rayOrigin: mouse"></a-camera>
     </a-scene>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let camera = document.querySelector("#camera");
+            let model = document.querySelector("#model");
+            let scaleFactor = 1; // Начальный масштаб
+
+            // Функция изменения масштаба модели
+            function updateScale(delta) {
+                scaleFactor += delta;
+                scaleFactor = Math.max(0.2, Math.min(scaleFactor, 3)); // Ограничение масштаба
+                model.setAttribute("scale", `${scaleFactor} ${scaleFactor} ${scaleFactor}`);
+            }
+
+            // Зум колесиком мыши
+            window.addEventListener("wheel", function (event) {
+                let delta = event.deltaY * -0.001; // Чувствительность зума
+                updateScale(delta);
+            });
+
+            // Зум на мобильных устройствах (pinch)
+            let touchStartDistance = 0;
+            window.addEventListener("touchstart", function (event) {
+                if (event.touches.length === 2) {
+                    let dx = event.touches[0].clientX - event.touches[1].clientX;
+                    let dy = event.touches[0].clientY - event.touches[1].clientY;
+                    touchStartDistance = Math.sqrt(dx * dx + dy * dy);
+                }
+            });
+
+            window.addEventListener("touchmove", function (event) {
+                if (event.touches.length === 2) {
+                    let dx = event.touches[0].clientX - event.touches[1].clientX;
+                    let dy = event.touches[0].clientY - event.touches[1].clientY;
+                    let newDistance = Math.sqrt(dx * dx + dy * dy);
+                    let delta = (newDistance - touchStartDistance) * 0.005;
+                    updateScale(delta);
+                    touchStartDistance = newDistance;
+                }
+            });
+        });
+    </script>
 </body>
 </html>
+
