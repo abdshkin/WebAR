@@ -1,52 +1,17 @@
-<!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-    <link rel="stylesheet" href="style.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebAR Исторический Персонаж</title>
-    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs>
-        <!-- Камера -->
-        <a-marker preset="hiro" type="pattern" url="marker.patt">
-            <!-- 3D-модель -->
-            <a-entity gltf-model="model.glb"
-                      position="0 0 0"
-                      scale="0.5 0.5 0.5">
-            </a-entity>
+        <a-marker preset="hiro">
+            <a-box position="0 0.5 0" material="color: red;"></a-box>
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>
-
-    <!-- Кнопки управления -->
-    <div class="buttons">
-        <button onclick="playSpeech()">Говорить</button>
-        <button onclick="stopSpeech()">Стоп</button>
-        <button onclick="toggleModel()">Скрыть/Показать</button>
-    </div>
-
-
-    <audio id="voice" src="speech.mp3"></audio>
-
-    <script>
-        function playSpeech() {
-            let audio = document.getElementById("voice");
-            audio.play();
-        }
-
-        function stopSpeech() {
-            let audio = document.getElementById("voice");
-            audio.pause();
-            audio.currentTime = 0;
-        }
-
-        function toggleModel() {
-            let model = document.querySelector("a-entity[gltf-model]");
-            model.setAttribute("visible", model.getAttribute("visible") === "true" ? "false" : "true");
-        }
-    </script>
 </body>
+</body>
+</body>
+
 </html>
