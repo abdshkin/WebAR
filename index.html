@@ -1,17 +1,22 @@
-<html>
+<!DOCTYPE html>
+<html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAR Тест</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs>
+        <!-- Камера с AR -->
         <a-marker preset="hiro">
+            <!-- 3D-объект -->
             <a-box position="0 0.5 0" material="color: red;"></a-box>
         </a-marker>
+
+        <!-- Фон -->
         <a-entity camera></a-entity>
     </a-scene>
 </body>
-</body>
-</body>
-
 </html>
