@@ -1,23 +1,51 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebAR Прототип</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/ar.js/aframe/build/aframe-ar.min.js"></script>
+    <title>WebAR Исторический Персонаж</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs>
+        <!-- Камера -->
         <a-marker preset="custom" type="pattern" url="marker.patt">
-            <a-entity id="character" 
-                      position="0 0 0" 
-                      scale="0.5 0.5 0.5" 
-                      rotation="0 180 0"
-                      gltf-model="model.glb">
+            <!-- 3D-модель -->
+            <a-entity gltf-model="model.glb"
+                      position="0 0 0"
+                      scale="0.5 0.5 0.5">
             </a-entity>
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>
+
+    <!-- Кнопки управления -->
+    <div class="buttons">
+        <button onclick="playSpeech()">Говорить</button>
+        <button onclick="stopSpeech()">Стоп</button>
+        <button onclick="toggleModel()">Скрыть/Показать</button>
+    </div>
+
+    <audio id="voice" src="speech.mp3"></audio>
+
+    <script>
+        function playSpeech() {
+            let audio = document.getElementById("voice");
+            audio.play();
+        }
+
+        function stopSpeech() {
+            let audio = document.getElementById("voice");
+            audio.pause();
+            audio.currentTime = 0;
+        }
+
+        function toggleModel() {
+            let model = document.querySelector("a-entity[gltf-model]");
+            model.setAttribute("visible", model.getAttribute("visible") === "true" ? "false" : "true");
+        }
+    </script>
 </body>
 </html>
